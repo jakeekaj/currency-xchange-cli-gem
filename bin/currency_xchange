@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'currency_xchange'
+
+CurrencyXchange::CLI.new.start
