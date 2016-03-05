@@ -1,12 +1,12 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'currency/xchange/cli/gem/version'
+require 'currency_xchange/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "currency-xchange-cli-gem"
-  spec.version       = Currency::Xchange::Cli::Gem::VERSION
-  spec.authors       = ["Jake"]
+  spec.version       = CurrencyXchange::VERSION
+  spec.authors       = ["John Carlo Malto"]
   spec.email         = ["jakemalto@yahoo.com"]
 
   spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
@@ -30,4 +30,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.11"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency "nokogiri"
+  spec.add_dependency "nokogiri"
 end

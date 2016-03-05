@@ -63,7 +63,7 @@ def self.search_list
 end
 
 
-def increase_amount
+def self.increase_amount
   puts "How many #{@@currency} do you want to convert? Commas(,) are not allowed. "
   num = gets.chomp.to_f
   @@amount = num
@@ -113,16 +113,9 @@ def self.again?
     self.increase_amount
     self.convert
   else
-    puts "Thank you for using 'How much is my money in?'Goodbye."
+    puts "Thank you for using 'Currency X-Change' Goodbye!"
   end
 end
-
-
-
-
-
-
-
 
 end
 
