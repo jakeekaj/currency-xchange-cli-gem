@@ -1,87 +1,41 @@
 class CurrencyXchange::Scraper
 
-@list = []
-@list2 = []
-@hash = {}
-@hash2 = {}
-@currency = nil
-@currency2 = nil
-@amount = 1.0
+@@list = []
+@@list2 = []
+@@hash = {}
+@@hash2 = {}
+@@currency = nil
+@@currency2 = nil
+@@amount = 1.0
 
-def start
+def self.scrape_index
   html = open("http://www.x-rates.com/")
   doc = Nokogiri::HTML(html)
   doc.css("ul.currencyList li a").each do |x|
-    @hash[x.text] = x.attr("href")
+    @@hash[x.text] = x.attr("href")
   end
-  @list = @hash.keys
+  @@list = @@hash.keys
+end
 
-  puts "\n <<<<<<<<     HOW MUCH IS MY MONEY IN?     >>>>>>>>\n "
-  puts "\n <<<<<<<<    LIVE RATES from x-rates.com   >>>>>>>>\n "
-  puts "You can choose from the following, or search for your local currency in our directory"
-  puts " \n___________________________________________________________"
-  puts "    US Dollar     |       Euro        |    British Pound \n-----------------------------------------------------------\n   Indian Rupee   | Australian Dollar |   Canadian Dollar \n-----------------------------------------------------------\n Singapore Dollar |    Swiss Franc    |  Malaysian Ringgit "
-  puts "___________________________________________________________\n "
-  puts "Let's start, what's your currency?"
-  puts "---------------------------------\n "
-  puts "If you like to search for other currencies, please type 'search': "
+def self.process_main_input
   input = gets.chomp
     if input == "search"
-      search_list
-    else 
-      process_input(input)
-      @currency = input
-      increase_amount
+      self.search_list
+    elsif @@list.include?(input)
+      @@currency = input
+    else
+      puts "Invalid entry. Please try again. Enter 'search' or name of currency"
+      self.process_main_input
     end
-  
-  process_input2
-  
 end  
 
-def increase_amount
-  puts "How many #{@currency} do you want to convert? Commas(,) are not allowed. "
-  num = gets.chomp.to_f
-  @amount = num
-end
 
-def again?
-  puts " \n-------------------------------------"
-  puts "Awesome. What do you want to do next? "
-  puts "-------------------------------------"
-  puts " \nWould you like to convert to another currency?            - enter 1"
-  puts "Would you like to select a new currency?                  - enter 2"
-  puts "Would you like to change the amount you want to convert?  - enter 3"
-  puts "Enter any key to terminate the program:"
-  key = gets.chomp
-  if key == "1"
-    process_input2
-  elsif key == "2"
-    start
-  elsif key == "3"
-    increase_amount
-    convert
-  else
-    puts "Thank you for using 'How much is my money in?'Goodbye."
-  end
-end
-
-def convert
-  html = open(@hash[@currency]+"&amount=#{@amount}")#
-  doc = Nokogiri::HTML(html)
-  doc.css("table.tablesorter tbody tr").each do |x|
-    @hash2[x.css("td")[0].text] = x.css("td")[1].text
-  end
-  
-  puts "Your #{@amount} in #{@currency} is worth #{@hash2[@currency2]} in #{@currency2}!"
-  again?
-end
-
-def search_list
+def self.search_list
   results =[]
   puts "Enter starting letter of currency/country:"
   letter = gets.chomp
   if letter =~ /[a-zA-Z]/
-    @list.each do|currency| 
+    @@list.each do|currency| 
       if currency[0] == letter.upcase
         puts currency
         results << currency
@@ -92,7 +46,7 @@ def search_list
     end
   else
     puts "Invalid letter. Try again"
-     search_list
+     self.search_list
   end
 
   puts "Do you want to search again? Y/N"
@@ -100,40 +54,75 @@ def search_list
      if x == "Y"
       search_list
     elsif x == "N"
-      puts "Alright. Reloading the CLI..."
-      start
+      puts "Alright. Enter 'search' or name of currency"
+      self.process_main_input
     else
       puts "Sorry. Invalid entry. Searching again..."
-      search_list
+      self.search_list
     end
 end
 
 
-def process_input(answer)
-  if @list.include?(answer)
-    puts "Loading currency list..."
+def increase_amount
+  puts "How many #{@@currency} do you want to convert? Commas(,) are not allowed. "
+  num = gets.chomp.to_f
+  @@amount = num
+end
+
+def self.process_2nd_input
+  puts "What currency do you like to convert to?"
+  answer = gets.chomp
+  if answer == @@currency
+    puts "You can't have same currencies for conversion."
+    self.process_2nd_input
+  elsif @@list.include?(answer)
+    puts "Converting your money now..."
+    puts " >> \n >>> \n >>>> \n >>>>> \n "
+    @@currency2 = answer
   else
-     puts "Invalid currency. Starting over..."
-     start 
+     puts "Invalid currency. Please try again:"
+     self.process_2nd_input
   end
 end
 
-def process_input2
-  puts "What currency do you like to convert to?"
-  answer = gets.chomp
-  if answer == @currency
-    puts "You can't have same currencies for conversion."
-    process_input2
-  elsif @list.include?(answer)
-    puts "Converting your money now..."
-    puts " >> \n >>> \n >>>> \n >>>>> \n "
-    @currency2 = answer
-    convert
+def self.convert
+  html = open(@@hash[@@currency]+"&amount=#{@@amount}")#
+  doc = Nokogiri::HTML(html)
+  doc.css("table.tablesorter tbody tr").each do |x|
+    @@hash2[x.css("td")[0].text] = x.css("td")[1].text
+  end
+  
+  puts "Your #{@@amount} in #{@@currency} is worth #{@@hash2[@@currency2]} in #{@@currency2}!"
+end
+
+def self.again?
+  puts " \n-------------------------------------"
+  puts "Awesome. What do you want to do next? "
+  puts "-------------------------------------"
+  puts " \nWould you like to convert to another currency?            - enter 1"
+  puts "Would you like to select a new currency?                  - enter 2"
+  puts "Would you like to change the amount you want to convert?  - enter 3"
+  puts "Enter any key to terminate the program:"
+  key = gets.chomp
+  if key == "1"
+    self.process_2nd_input
+  elsif key == "2"
+    puts "Enter your currency or search through our list"
+    self.process_main_input
+  elsif key == "3"
+    self.increase_amount
+    self.convert
   else
-     puts "Invalid currency. Please try again:"
-     process_input2 
+    puts "Thank you for using 'How much is my money in?'Goodbye."
   end
 end
+
+
+
+
+
+
+
 
 end
 

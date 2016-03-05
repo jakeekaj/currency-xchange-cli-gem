@@ -2,9 +2,9 @@ require 'open-uri'
 require 'pry'
 require 'nokogiri'
 
-require "currency_xchange/version"
-require "currency_xchange/cli"
-#require "currency_xchange/scraper"
+require '../lib/currency_xchange/version.rb'
+require '../lib/currency_xchange/cli.rb'
+require '../lib/currency_xchange/scraper.rb'
 
 module CurrencyXchange
 end
