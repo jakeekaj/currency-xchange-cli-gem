@@ -1,8 +1,6 @@
-# Currency::Xchange::Cli::Gem
+# CurrencyXchange
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/currency/xchange/cli/gem`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+CurrencyXchange provides you with a CLI to interact with and help you convert local currencies to foreign currencies. All rates are scraped from x-rates.com. 
 
 ## Installation
 
@@ -22,7 +20,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+The CLI is designed to be user-friendly. You have the option to search through the currencies via the starting letters. You can also choose how much currency to convert. At the end of each conversion, you have the option to revise your local currency, the amount, and foreign currency, without having to start over. 
 
 ## Development
 
@@ -32,7 +30,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/currency-xchange-cli-gem. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/jakeekaj/currency-xchange-cli-gem. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License

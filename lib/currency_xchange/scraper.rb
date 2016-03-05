@@ -8,6 +8,7 @@ class CurrencyXchange::Scraper
   @@currency2 = nil
   @@amount = 1.0
 
+  ##scrapes the index page of x-rates.com for the list of available currencies and their corresponding URL
   def self.scrape_index
     html = open("http://www.x-rates.com/")
     doc = Nokogiri::HTML(html)
@@ -16,7 +17,8 @@ class CurrencyXchange::Scraper
     end
     @@list = @@hash.keys
   end
-
+  
+  ##This provides the first input of the user, which can either be a search or the currency he wants to convert
   def self.process_main_input
     input = gets.chomp
       if input == "search"
@@ -29,7 +31,7 @@ class CurrencyXchange::Scraper
       end
   end  
 
-
+  ##search method to run through the list of currencies
   def self.search_list
     results =[]
     puts "Enter starting letter of currency/country:"
@@ -62,13 +64,14 @@ class CurrencyXchange::Scraper
       end
   end
 
-
+  ##method to increase the amount of currency to convert
   def self.increase_amount
     puts "How many #{@@currency} do you want to convert? Commas(,) are not allowed. "
     num = gets.chomp.to_f
     @@amount = num
   end
 
+  ##this method takes in the foreign currency for the output of the conversion
   def self.process_2nd_input
     puts "What currency do you like to convert to?"
     answer = gets.chomp
@@ -83,6 +86,7 @@ class CurrencyXchange::Scraper
     end
   end
 
+  ##this method converts the local currency to the foreign currency using the amount given
   def self.convert
     html = open(@@hash[@@currency]+"&amount=#{@@amount}")#
     doc = Nokogiri::HTML(html)
