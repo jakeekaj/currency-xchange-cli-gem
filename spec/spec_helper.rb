@@ -1,2 +1,3 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'currency/xchange/cli/gem'
+require 'currency_xchange/cli'
+require 'currency_xchange/scraper'
